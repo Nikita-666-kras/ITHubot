@@ -3,8 +3,9 @@ package com.example.ITHubot.Security;
 import com.example.ITHubot.Models.Result;
 import com.example.ITHubot.Models.User;
 import com.example.ITHubot.Models.UserScore;
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.AllArgsConstructor;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,12 +21,14 @@ import java.util.stream.Collectors;
 public class UserDetailsImpl implements UserDetails {
     private Long id;
     private String userName;
+    private Set<String> roles;
 //    private Date createdAt;
 
     public static UserDetailsImpl build(User user){
         return new UserDetailsImpl(
                 user.getUserId(),
-                user.getUsername());
+                user.getUsername(),
+                user.getRoles());
 
     }
 //    @Override
@@ -36,8 +39,15 @@ public class UserDetailsImpl implements UserDetails {
 //    }
 
     @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public String getPassword() {
-        return userName;
+        return "";
     }
 
     @Override

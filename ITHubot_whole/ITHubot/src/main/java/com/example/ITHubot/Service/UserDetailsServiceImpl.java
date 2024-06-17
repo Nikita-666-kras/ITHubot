@@ -22,10 +22,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
     public String newUser(SignupRequest signupRequest) {
         User user = new User();
-        user.setName(signupRequest.getName());
-        user.setEmail(signupRequest.getEmail());
-        user.getId();
-        user.setPassword(signupRequest.getPassword());
+        user.setUsername(signupRequest.getName());
+        user.getUserId();
+
         return dataAccessLayer.newUserToDatabase(user);
     }
     @Override
